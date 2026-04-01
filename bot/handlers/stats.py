@@ -1,0 +1,11 @@
+import asyncio
+from aiogram import Router, types
+from aiogram.filters import Command
+from bot.services.statistics import get_weekly_stats
+
+router = Router()
+
+@router.message(Command("stats"))
+async def cmd_stats(message: types.Message):
+    stats = await asyncio.to_thread(get_weekly_stats, message.from_user.id)
+    await message.answer(stats, parse_mode="Markdown")
