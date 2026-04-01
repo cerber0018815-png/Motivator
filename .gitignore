@@ -1,0 +1,41 @@
+# Файлы Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Виртуальное окружение
+venv/
+env/
+ENV/
+.venv
+
+# Файлы окружения (секреты)
+.env
+.env.local
+.env.*.local
+
+# Логи и базы данных
+*.log
+*.sqlite
+*.db
+
+# IDEs и редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Файлы сборки и дистрибуции
+dist/
+build/
+*.egg-info/
+
+# Файлы, создаваемые при работе бота (если есть)
+bot.db
+bot.log
