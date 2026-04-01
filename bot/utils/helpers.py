@@ -1,0 +1,30 @@
+from datetime import datetime
+from typing import Dict, List, Optional
+from sqlalchemy import select, desc
+from bot.database import AsyncSessionLocal, User, Message, DailyEntry
+
+async def get_user_context(session, user_id: int, limit: int = 20) -> Dict:
+    """Собирает контекст для DeepSeek: цели, последние сообщения, запись за сегодня."""
+    user = await session.get(User, user_id)
+    if not user:
+        return {"goals": "", "history": [], "today_entry": None, "date": datetime.utcnow().date().isoformat()}
+
+    # Последние сообщения
+    stmt = select(Message).where(Message.user_id == user_id).order_by(desc(Message.created_at)).limit(limit)
+    result = await session.execute(stmt)
+    messages = result.scalars().all()
+    history = [{"role": m.role, "text": m.text, "created_at": m.created_at.isoformat()} for m in reversed(messages)]
+
+    # Запись за сегодня
+    today = datetime.utcnow().date()
+    stmt = select(DailyEntry).where(DailyEntry.user_id == user_id, DailyEntry.date == today)
+    result = await session.execute(stmt)
+    today_entry = result.scalar_one_or_none()
+
+    return {
+        "goals": user.goals or "",
+        "history": history,
+        "today_entry": today_entry,
+        "date": today.isoformat(),
+        "timezone": user.timezone or "UTC"
+    }
