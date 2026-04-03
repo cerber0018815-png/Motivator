@@ -15,4 +15,4 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 
 # Список Telegram ID администраторов (целые числа)
-ADMINS = [123456789]  # замените на свой ID
+ADMINS = [928589977]  # замените на свой ID
